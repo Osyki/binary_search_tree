@@ -76,7 +76,6 @@ int Customers<Item_Type>::count_big_limits(double limit) {
     if (this->is_null()) {
         return 0;
     }
-
     return check_limit(this->get_data(),limit) + count_big_limits(this->get_left_subtree(),limit) + count_big_limits(this->get_right_subtree(), limit);
 }
 
@@ -85,13 +84,67 @@ int Customers<Item_Type>::count_big_limits(const Binary_Tree<Item_Type> &the_tre
     if (the_tree.is_null()) {
         return 0;
     }
-    return check_limit(the_tree.get_data(),limit);
+    return check_limit(the_tree.get_data(),limit) + count_big_limits(the_tree.get_left_subtree(),limit) +
+            count_big_limits(the_tree.get_right_subtree(),limit);
 }
 
 template<typename Item_Type>
 int Customers<Item_Type>::check_limit(Customer data, double limit) {
     //int sum = 0;
-    return data.GetLimit() > limit ? 1 : 0;
+    return data.GetLimit() >= limit ? 1 : 0;
+}
+
+template<typename Item_Type>
+bool Customers<Item_Type>::any_over_limit() {
+    if (this->is_null()) {
+        return false;
+    }
+
+    list<Charge> charges = this->get_data().GetCharges();
+    list<Charge>::iterator begin = charges.begin();
+    list<Charge>::iterator end = charges.end();
+    if (sum_charges(begin, end) > this->get_data().GetLimit()) {
+        return true;
+    }
+
+    return any_over_limit(this->get_left_subtree()) || any_over_limit(this->get_right_subtree());
+}
+
+template<typename Item_Type>
+bool Customers<Item_Type>::any_over_limit(const Binary_Tree<Item_Type> &the_tree) {
+    if (the_tree.is_null()) {
+        return false;
+    }
+
+    list<Charge> charges = the_tree.get_data().GetCharges();
+    list<Charge>::iterator begin = charges.begin();
+    list<Charge>::iterator end = charges.end();
+
+    if (sum_charges(begin, end) > the_tree.get_data().GetLimit()) {
+        return true;
+    }
+
+    return any_over_limit(the_tree.get_left_subtree()) || any_over_limit(the_tree.get_right_subtree());
+}
+
+template<typename Item_Type>
+double Customers<Item_Type>::sum_charges(list<Charge>::iterator begin, list<Charge>::iterator end) {
+    double sum = 0.0;
+    while (begin != end) {
+        sum += begin->GetAmount();
+        begin++;
+    }
+    return sum;
+}
+
+template<typename Item_Type>
+Item_Type *Customers<Item_Type>::increase_limit(string card_number, double limit_add) {
+    return nullptr;
+}
+
+template<typename Item_Type>
+const Item_Type *Customers<Item_Type>::find(const string &target) const {
+    return nullptr;
 }
 
 

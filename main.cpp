@@ -51,7 +51,7 @@ int main() {
     Customer jonr("1234",jon,5000.00,joncharges);
     Customer keithg("3412",keith,2500.00,keithcharges);
     Customer bishoys("2344", bishoy,3200.00,bishoycharges);
-    Customer nickk("8874",nick,1200.00,nickcharges);
+    Customer nickk("8874",nick,2200.00,nickcharges);
     Customer hloi("9999",loi,10000.00,loicharges);
 
     Customers<Customer> mycustomers;
@@ -61,8 +61,10 @@ int main() {
     mycustomers.insert(nickk);
     mycustomers.insert(hloi);
     std::cout << mycustomers.to_string();
-    int x = mycustomers.count_big_limits(200.00);
-    std::cout << x;
+    int x = mycustomers.count_big_limits(9000.00);
+    std::cout << x << "\n";
+
+    std::cout << std::boolalpha << mycustomers.any_over_limit();
 
 
     return 0;
