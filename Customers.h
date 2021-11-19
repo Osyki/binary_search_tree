@@ -13,6 +13,7 @@
 
 #ifndef CUSTOMERS_H
 #define CUSTOMERS_H
+
 #include "Binary_Search_Tree.h"
 #include "Customer.h"
 #include <iostream>
@@ -26,46 +27,72 @@ public:
 
     Customers() : Binary_Search_Tree<Item_Type>() {
     }
-    Customers(const Customers& orig) {}
+
+    Customers(const Customers &orig) {}
+
     virtual ~Customers() {}
+
     // count-big-limits: BST Number -> Natural
     // consumes a binary search tree and a credit limit amount, produces the number of customers
     // who have a credit limit higher than the given amount
     int count_big_limits(double limit);
 
     bool any_over_limit();
-    
+
     // increase-limit: BST Natural Number -> BST
     // consumes a BST, a credit card number, and an amount of money. Function finds that
     // card number in the BST and changes that customer's credit limit, adding the amount of money
     // given to the limit. Function returns BST identical except for limit change
-    Item_Type* increase_limit(string card_number, double limit_add);
-    
-    const Item_Type* find(const string& target) const;
-    
-private: 
+    Item_Type *increase_limit(string card_number, double limit_add);
+
+    const Item_Type *find(const string &target) const;
+
+private:
     // count-big-limits: BST Number -> Natural
     // consumes a binary search tree and a credit limit amount, produces the number of customers
-    // who have a credit limit higher than the given amount    
-    int count_big_limits(const Binary_Tree<Item_Type>& the_tree, double limit);
+    // who have a credit limit higher than the given amount
+    int count_big_limits(const Binary_Tree<Item_Type> &the_tree, double limit);
+
     // check-limit: Number Number -> Natural
     // takes in a customer's credit limit and a given credit limit, returns 1 if the customers's
     // credit limit is higher than the given limit, 0 otherwise.
     int check_limit(Customer data, double limit);
-    
+
     // any-over-limit?: BST -> Boolean
     // consumes a binary search tree and produces true if any customer in that tree has exceeded
     // their credit limit with their total purchases (charges)
-    bool any_over_limit(const Binary_Tree<Item_Type>& the_tree);
+    bool any_over_limit(const Binary_Tree<Item_Type> &the_tree);
+
     // sum-charges: ListOfCharge -> Number
     // consumes a ListOfCharge, produces the sum cost of those charges as a Number
-    double sum_charges(list<Charge>::iterator begin, 
-            list<Charge>::iterator end);
-  
-    
-    
+    double sum_charges(list<Charge>::iterator begin,
+                       list<Charge>::iterator end);
+
+
 };
 
+template<typename Item_Type>
+int Customers<Item_Type>::count_big_limits(double limit) {
+    if (this->is_null()) {
+        return 0;
+    }
+
+    return check_limit(this->get_data(),limit) + count_big_limits(this->get_left_subtree(),limit) + count_big_limits(this->get_right_subtree(), limit);
+}
+
+template<typename Item_Type>
+int Customers<Item_Type>::count_big_limits(const Binary_Tree<Item_Type> &the_tree, double limit) {
+    if (the_tree.is_null()) {
+        return 0;
+    }
+    return check_limit(the_tree.get_data(),limit);
+}
+
+template<typename Item_Type>
+int Customers<Item_Type>::check_limit(Customer data, double limit) {
+    //int sum = 0;
+    return data.GetLimit() > limit ? 1 : 0;
+}
 
 
 #endif /* CUSTOMERS_H */

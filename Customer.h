@@ -54,7 +54,7 @@ Customer::Customer() {
 
 Customer::Customer(string ccn, Contact &contact, double limit, list<Charge> charges) {
     card_number = ccn;
-    &this->contact = contact;
+    this->contact = contact;
     this->limit = limit;
     this->charges = charges;
 }
@@ -83,7 +83,7 @@ double Customer::GetLimit() const {
 }
 
 void Customer::SetContact(Contact &contact) {
-    &this->contact = contact;
+    this->contact = contact;
 }
 
 Contact Customer::GetContact() const {
@@ -107,9 +107,8 @@ void Customer::push_back(Charge c) {
 }
 
 std::ostream &operator<<(std::ostream &out, const Customer &customer) {
-    ostream oss;
-    oss << customer.card_number << " " << customer.contact << " " << limit << " " << customer.charges;
-    return oss;
+    out << customer.card_number << " " << customer.contact << " " << customer.limit; //FIXME add charges
+    return out;
 }
 
 #endif /* CUSTOMER_H */

@@ -90,9 +90,9 @@ string Contact::getName() const {
 }
 
 std::ostream &operator<<(std::ostream &out, const Contact &contact) {
-    ostream oss;
-    oss << contact.name << " " contact.address << " " << contact.email;
-    return oss;
+    //ostream out;
+    out << contact.name << " " << contact.address << " " << contact.email;
+    return out;
 }
 
 

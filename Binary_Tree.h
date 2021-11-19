@@ -148,7 +148,7 @@ template<typename Item_Type>
 std::string Binary_Tree<Item_Type>::to_string() const {
     std::ostringstream os;
     if (is_null())
-        os << "NULL\n";
+        os << "";
     else {
         os << *root << '\n';
         os << get_left_subtree().to_string(); //recursive
