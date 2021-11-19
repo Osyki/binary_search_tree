@@ -139,6 +139,13 @@ double Customers<Item_Type>::sum_charges(list<Charge>::iterator begin, list<Char
 
 template<typename Item_Type>
 Item_Type *Customers<Item_Type>::increase_limit(string card_number, double limit_add) {
+    if (this->is_null()) {
+        return NULL;
+    }
+    if (this->get_data().GetCard_number() == card_number) {
+        this->get_data().SetLimit(this->get_data().GetLimit() + limit_add);
+        return this->get_data();
+    }
     return nullptr;
 }
 
