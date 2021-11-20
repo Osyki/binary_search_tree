@@ -68,7 +68,7 @@ private:
     double sum_charges(list<Charge>::iterator begin,
                        list<Charge>::iterator end);
 
-
+    //const Item_Type *find(const Customers<Item_Type> *the_tree, string &target) const;
 };
 
 template<typename Item_Type>
@@ -138,22 +138,31 @@ double Customers<Item_Type>::sum_charges(list<Charge>::iterator begin, list<Char
 }
 
 template<typename Item_Type>
-Item_Type *Customers<Item_Type>::increase_limit(string card_number, double limit_add) {
+Item_Type *Customers<Item_Type>::increase_limit(string card_number, double limit_add) { //FIXME
     if (this->is_null()) {
         return NULL;
     }
-    if (this->get_data().GetCard_number() == card_number) {
-        this->get_data().SetLimit(this->get_data().GetLimit() + limit_add);
-        return this->get_data();
+    Item_Type *person = find(card_number);
+    if (person != NULL) {
+        person->get_data().SetLimit(person->get_data().GetLimit() + limit_add);
     }
-    return nullptr;
+    return this;
 }
 
 template<typename Item_Type>
-const Item_Type *Customers<Item_Type>::find(const string &target) const {
-    return nullptr;
+const Item_Type *Customers<Item_Type>::find(const string &target) const { //FIXME
+    if (this->get_data().GetCard_number() == target) {
+        return this;
+    }
+    Item_Type *person = NULL;
+    if (this->get_right_subtree != NULL) {
+        person = this->get_right_subtree.find(target);
+    }
+    if (this->get_right_subtree != NULL && (person == NULL)) {
+        person = this->get_right_subtree.find(target);
+    }
+    return person;
 }
-
 
 #endif /* CUSTOMERS_H */
 
