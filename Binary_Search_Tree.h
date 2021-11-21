@@ -176,9 +176,7 @@ template<typename Item_Type>
 }
 
 template<typename Item_Type>
-  const Item_Type* Binary_Search_Tree<Item_Type>::find(
-    BTNode<Item_Type>* local_root, 
-    const Item_Type& target) const {
+  const Item_Type* Binary_Search_Tree<Item_Type>::find(BTNode<Item_Type>* local_root, const Item_Type& target) const {
   if (local_root == NULL)
     return NULL;
   if (target < local_root->data)

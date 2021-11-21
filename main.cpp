@@ -66,8 +66,10 @@ int main() {
 
     std::cout << std::boolalpha << mycustomers.any_over_limit();
 
-    //mycustomers.increase_limit("1234",200.00);
-
+    mycustomers.increase_limit("1234",7000.00);
+//    const Customer *jonr2 = mycustomers.find("1234");
+//    const Customer *jon3 = mycustomers.find("1234");
+    std::cout<< mycustomers.to_string();
 
     return 0;
 }

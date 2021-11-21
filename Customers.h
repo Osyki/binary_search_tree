@@ -44,9 +44,7 @@ public:
     // card number in the BST and changes that customer's credit limit, adding the amount of money
     // given to the limit. Function returns BST identical except for limit change
     Item_Type *increase_limit(string card_number, double limit_add);
-
-    const Item_Type *find(const string &target) const;
-
+    Item_Type* find(const string &card_wanted);
 private:
     // count-big-limits: BST Number -> Natural
     // consumes a binary search tree and a credit limit amount, produces the number of customers
@@ -68,7 +66,7 @@ private:
     double sum_charges(list<Charge>::iterator begin,
                        list<Charge>::iterator end);
 
-    //const Item_Type *find(const Customers<Item_Type> *the_tree, string &target) const;
+    Item_Type* find(BTNode<Item_Type>* local_root, const string &card_wanted);
 };
 
 template<typename Item_Type>
@@ -138,30 +136,32 @@ double Customers<Item_Type>::sum_charges(list<Charge>::iterator begin, list<Char
 }
 
 template<typename Item_Type>
-Item_Type *Customers<Item_Type>::increase_limit(string card_number, double limit_add) { //FIXME
+Item_Type *Customers<Item_Type>::increase_limit(string card_number, double limit_add) {
     if (this->is_null()) {
         return NULL;
     }
-    Item_Type *person = find(card_number);
+    Customer *person = find(card_number);
     if (person != NULL) {
-        person->get_data().SetLimit(person->get_data().GetLimit() + limit_add);
+        person->SetLimit(person->GetLimit() + limit_add);
     }
-    return this;
+    return person;
 }
 
 template<typename Item_Type>
-const Item_Type *Customers<Item_Type>::find(const string &target) const { //FIXME
-    if (this->get_data().GetCard_number() == target) {
-        return this;
-    }
-    Item_Type *person = NULL;
-    if (this->get_right_subtree != NULL) {
-        person = this->get_right_subtree.find(target);
-    }
-    if (this->get_right_subtree != NULL && (person == NULL)) {
-        person = this->get_right_subtree.find(target);
-    }
-    return person;
+ Item_Type* Customers<Item_Type>::find(const string &card_wanted)  {
+    return find(this->root, card_wanted);
+}
+
+template<typename Item_Type>
+ Item_Type* Customers<Item_Type>::find(BTNode<Item_Type>* local_root, const string &card_wanted)  {
+    if (local_root == NULL)
+        return NULL;
+    if (card_wanted < local_root->data.GetCard_number())
+        return find(local_root->left, card_wanted);
+    else if (local_root->data.GetCard_number() < card_wanted)
+        return find(local_root->right, card_wanted);
+    else
+        return &(local_root->data);
 }
 
 #endif /* CUSTOMERS_H */

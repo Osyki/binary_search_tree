@@ -98,8 +98,12 @@ string Customer::GetCard_number() const {
     return card_number;
 }
 
+//bool Customer::operator<(const Customer &other) const {
+//    return limit < other.limit;
+//}
+
 bool Customer::operator<(const Customer &other) const {
-    return limit < other.limit;
+    return card_number < other.card_number;
 }
 
 void Customer::push_back(Charge c) {
